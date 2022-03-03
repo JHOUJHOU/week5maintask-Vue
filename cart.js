@@ -14,7 +14,7 @@ const app = createApp({
   },
   methods: {
     getProducts() {
-      const apiUrl = `${url}/api/${api_path}/products`;
+      const apiUrl = `${url}/api/${api_path}/products/all`;
       axios.get(apiUrl)
         .then((res) => {
           console.log(res);
