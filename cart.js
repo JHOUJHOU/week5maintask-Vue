@@ -1,10 +1,9 @@
 /* global axios bootstrap */
-// eslint-disable-next-line
-// import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.esm-browser.prod.min.js';
 
 const url = 'https://vue3-course-api.hexschool.io/v2';
 const api_path = 'yusyuanjhou';
 
+// VeeValidate 驗證規格
 const { defineRule, Form, Field, ErrorMessage, configure } = VeeValidate;
 const { required, email, min, max } = VeeValidateRules;
 const { localize, loadLocaleFromURL } = VeeValidateI18n;
@@ -20,34 +19,35 @@ configure({ // 用來做一些設定
 generateMessage: localize('zh_TW'), //啟用 locale 
 });
 
+// Vue CDN
 const app = Vue.createApp({
 components: {
-  VForm: Form,
-  VField: Field,
-  ErrorMessage: ErrorMessage,
+VForm: Form,
+VField: Field,
+ErrorMessage: ErrorMessage,
 },
 data() {
-  return {
-    cartData: {
-      carts: []
-    },
-    products: [],
-    productId: '',
-    isLoading: '',
-    qty : 1,
-    form: {
-      user: {
-        name: '',
-        email: '',
-        tel: '',
-        address: ''
-        },
-      message: ''
-    },
-    cart: {
-      carts: []
-    }
-  };
+return {
+  cartData: {
+    carts: []
+  },
+  products: [],
+  productId: '',
+  isLoading: false,
+  qty : 1,
+  form: {
+    user: {
+      name: '',
+      email: '',
+      tel: '',
+      address: ''
+      },
+    message: ''
+  },
+  cart: {
+    carts: []
+  }
+};
 },
 methods: {
   getProducts() {
@@ -161,53 +161,55 @@ methods: {
   }
 },
 mounted() {
-  this.getProducts();
-  this.getCart();
+this.getProducts();
+this.getCart();
 },
 });
 
+// modal 元件註冊
 app.component('product-modal', {
 props: ['id'],
 template : '#userProductModal',
 data() {
-  return {
-    modal: '',
-    product: {},
-    qty: 1
-  }
+return {
+  modal: '',
+  product: {},
+  qty: 1
+}
 },
 watch: {
-  id() {
-    this.getProduct();
-  }
+id() {
+  this.getProduct();
+}
 },
 methods: {
-  openModal() {
-    this.modal.show();
-  },
-  closeModal() {
-    this.modal.hide();
-  },
-  getProduct() {
-    const apiUrl = `${url}/api/${api_path}/product/${this.id}`;
-    axios.get(apiUrl)
-      .then((res) => {
-        this.product = res.data.product;
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  },
-  addToCart() {
-    this.$emit('add-cart', this.product.id , this.qty);
-    this.closeModal();
-  }
+openModal() {
+  this.modal.show();
+},
+closeModal() {
+  this.modal.hide();
+},
+getProduct() {
+  const apiUrl = `${url}/api/${api_path}/product/${this.id}`;
+  axios.get(apiUrl)
+    .then((res) => {
+      this.product = res.data.product;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+},
+addToCart() {
+  this.$emit('add-cart', this.product.id , this.qty);
+  this.closeModal();
+}
 },
 mounted() {
-  this.modal = new bootstrap.Modal(this.$refs.modal);
+this.modal = new bootstrap.Modal(this.$refs.modal);
 }
 });
 
+// VeeValidate 元件註冊
 app.component('VForm', VeeValidate.Form);
 app.component('VField', VeeValidate.Field);
 app.component('ErrorMessage', VeeValidate.ErrorMessage);

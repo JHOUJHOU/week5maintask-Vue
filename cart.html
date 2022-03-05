@@ -197,8 +197,9 @@
                       rows="10"
                       v-model="form.message"></textarea>
               </div>
+
               <div class="text-end">
-                  <button type="submit" class="btn btn-danger" @click.prevent="createToOrder" :disabled="Object.keys(errors).length > 0 || cartData.carts.length === 0">送出訂單</button>
+                  <button type="submit" class="btn btn-danger" @click.prevent="createToOrder" :disabled="Object.keys(errors).length > 0 || cart.carts.length === 0">送出訂單</button>
               </div>
           </v-form>
       </div>
